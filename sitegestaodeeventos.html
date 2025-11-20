@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Site Teste - Gestão de Eventos</title>
+  <style type="text/css">
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #0b4fa3, #f08a1f, #0b4fa3);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 530px;
+      height: 340px;
+      background: white;
+      padding: 40px;
+      border-radius: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    }
+
+    .logo-area {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .logo-area img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .modal-content {
+    
+      padding: 30px 20px;
+      border-radius: 16px;
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: center;
+	display: flex;
+       flex-direction: column;
+	 align-items: center; /* centraliza os itens horizontalmente */
+  justify-content: center; /* centraliza os itens verticalmente */
+  gap: 20px; /* espaçamento entre texto e botões */
+  height: 200px; /* altura fixa para centralizar verticalmente */
+	font-family: Inter;
+    }
+.centered-text {
+  margin: 0;
+  line-height: 1.5;
+  width: 100%; /* ocupa toda a largura disponível */
+  padding-left: 10px; /* opcional: ajuste de alinhamento */
+}
+
+   
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px; /* espaçamento entre os botões */
+ width: 100%; /* ocupa toda a largura disponível */
+}
+    button {
+      width: 299px;
+      height: 44px;
+      padding: 10px;
+      background: #f08a1f;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      color: #B26019;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+.button-link {
+  width: 299px;
+  height: 44px;
+  padding: 10px;
+  background: #f08a1f;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #B26019; /* cor do texto */
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none; /* remove o sublinhado do link */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.button-link:hover {
+  opacity: 0.9;
+}
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo-area">
+      <img src="./imagem (1) (1).png" alt="Logo Gestão de Eventos">
+    </div>
+
+    <div class="modal-content">
+      <div class="centered-text">
+        <p>Para continuar com essa ação, é necessário<br>entrar em sua conta</p>
+      </div>
+      <div class="button-container">
+      <div class="button-container">
+  <a href="login.html" class="button-link">ENTRAR NA CONTA</a>
+  <a href="cadastro.html" class="button-link">CRIAR CONTA</a>
+</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

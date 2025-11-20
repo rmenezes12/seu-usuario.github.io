@@ -1,0 +1,639 @@
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://unpkg.com/feather-icons"></script>
+<title>SenacConecta</title>
+<style>
+    .banner_do_site {
+        background-color: #00009c;
+        height: 200px;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        position: relative;  /* necessário para o ícone usar referência daqui */
+        display: flex;
+        align-items: center; /* centraliza verticalmente o conteúdo */
+        padding-left: 60px;  /* espaço para o texto não colar na borda */
+        justify-content: space-between;  /* joga o conteúdo para o lado direito */
+        padding-right: 40px;        /* espaço da borda direita */
+    }
+ 
+    #icone_do_site {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 0;
+    }
+ 
+    /* força a cor do ícone */
+    #icone_do_site svg {
+        stroke: orange !important;
+        stroke-width: 2;
+        width: 60px;
+        height: 60px;
+    }
+ 
+    h3 {
+        position: relative;
+        z-index: 2; /* texto na frente */
+        margin: 0;
+        font-size: 30px;
+        line-height: 1.2;
+    }
+ 
+    .conta {
+       background-color: #00009c;
+       border: solid orange;
+       color:white;
+       width: 150px;
+       height: 50px;
+       text-align: center;
+       cursor: pointer;
+    }
+ 
+    .conta:hover {
+       background-color:orange;
+       color:black;
+    }
+ 
+    .barra_de_pesquisa {
+        position: absolute;
+        bottom: 0;
+        left:50%;
+        transform: translateX(-50%);
+        background-color: white;
+        border-radius: 17px;
+        border: 3px solid orange;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: 35%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+ 
+    .barra_de_pesquisa input {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 6px;
+        font-size: 14px;
+    }
+ 
+    .barra_de_pesquisa button {
+        background-color: orange;
+        border: none;
+        color: white;
+        padding: 6px 12px;
+        cursor: pointer;
+        font-weight:bold ;
+        border-radius: 17px;
+    }
+ 
+    .barra_de_pesquisa button:hover {
+        background-color: darkorange;
+        color: black;
+    }
+ 
+    .criar:hover, .eu:hover, .ingresso:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+ 
+    .user {
+    padding: 20px; /* afasta tudo da borda da div user */
+    display: flex;
+    flex-direction: column; /* empilha o conteúdo para cima e containers para baixo */
+    gap: 20px; /* espaço entre o texto e os 2 containers */
+    }
+ 
+    .ingressos {
+        display: flex;
+        gap: 20px;
+        position: relative;
+    }
+ 
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+ 
+    .popup-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 300px;
+        text-align: center;
+    }
+ 
+    .close-btn {
+        margin-top: 10px;
+        background: red;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+    }
+ 
+    .container1, .container2 {
+        background-color: #00009c;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        border-radius: 10px;
+        width: 400px;
+        height: 220px;
+        padding-left: 10px ;
+        cursor: pointer;
+        flex:1;
+        box-shadow: 0 18px 40px rgba(2,6,23,0.18);
+        transition: transform 0.2s ease-in-out;
+    }
+   
+    .container1:hover, .container2:hover {
+        transform: translateY(-12px) rotate(-1deg) scale(1.02);
+    }
+   
+    .ver_ingresso {
+        background-color: white;
+        color: orange;
+        text-align: center;
+        border: solid orange;
+        border-radius: 10px;
+        margin: 20px auto;
+        display: block;
+        width: 130px;
+        height: 30px;
+    }
+ 
+    .ver_ingresso:hover {
+        background-color: darkorange;
+        border: solid darkorange;
+        color:black;
+    }
+   
+    .ingressos_escondidos {
+        display: none; /* Começa escondido */
+        margin-top: 20px;
+        grid-template-columns: 1fr 1fr; /* 2 por linha */
+        gap: 20px;
+    }
+ 
+    .ver_mais {
+        width: 150px;
+        height: 50px;
+        margin: 30px auto 0 auto; /* centraliza */
+        display: block;
+        background: orange;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        box-shadow: 0 8px 20px rgba(2,6,23,0.18);
+        transition: transform 0.2s;
+        margin-bottom: 10px;
+
+    }
+ 
+    .ver_mais:hover {
+        transform: scale(1.05);
+        background-color: gray;
+    }
+ 
+    .user_account {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        background-color: rgb(135, 155, 235);
+        border: 5px solid #00009c;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+ 
+    .user_account svg {
+        stroke: rgb(48, 48, 131) !important;
+        width: 60px;
+        height: 60px;
+    }
+ 
+    #photoInput {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+ 
+    .user_profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        top: -10px;
+    }
+ 
+    .user_info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+    }
+ 
+    .user_name {
+        font-size: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        color: black;
+    }
+ 
+    .user_edit {
+        color: #f7b630;
+        font-size: 16px;
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: pointer;
+    }
+ 
+    .user_edit:hover {
+        color: red;
+        text-decoration: underline;
+    }
+ 
+    .day {
+        color: #c9c9c9;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+    }
+ 
+    h1 {
+        color: black;
+        font-family: Arial, Helvetica, sans-serif;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        padding-left: 20px;
+    }
+ 
+    .todos_os_sites {
+        padding-top: 80px;
+    }
+ 
+    .history {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+ 
+    .tabela {
+        width: 500px;
+        color: white;
+        font-family: Arial;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 4px solid #000;
+    }
+ 
+    .linha {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 20px;
+        background-color: #00009c;
+        border-bottom: 3px solid #000;
+        font-size: 16px;
+    }
+ 
+    .linha:last-child {
+        border-bottom: none;
+    }
+ 
+    .categoria {
+        font-weight: bold;
+        color: orange;
+    }
+ 
+    #comprado {
+        color: lime;
+        font-weight: bold;
+    }
+ 
+    #cancelado {
+        color: #ff655d;
+        font-weight: bold;
+    }
+ 
+    .favoritos {
+        display: flex;
+        justify-content: space-around;
+        padding: 15px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+ 
+    .eventos_favoritos {
+        background-color: #00009c;
+        color: white;
+        border-radius: 20px;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        width: 300px;
+        height: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+    }
+ 
+    .eventos_favoritos:hover {
+        transform: translateY(-12px) rotate(-1deg) scale(1.02);
+    }
+ 
+    .eventos_favoritos p {
+        margin: 5px 0;
+    }
+ 
+    .title {
+        color:orange;
+        font-size: 20px;
+    }
+ 
+    .rodape {
+        background: linear-gradient(to bottom, #00009c, #4b91ff, #bbd5ff);
+        color: white;
+        padding: 40px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+ 
+    .rodape .coluna {
+        min-width: 150px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+ 
+    .rodape p {
+        margin: 0;
+        font-size: 14px;
+        cursor: pointer;
+    }
+ 
+    .rodape p:hover {
+        text-decoration: underline;
+        color: orange;
+    }
+
+    .pop_up_btn:hover {
+        transform: scale(1.05);
+    }
+
+    .history:hover {
+        transform: translateY(12px) rotate(1deg) scale(1.02);
+        box-shadow: black;
+    }
+</style>
+</head>
+<body>
+<header class="banner_do_site">
+   <div id="icone_do_site">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+   </div>
+    <h3>GESTÃO<br> DE<br> EVENTOS</h3>
+    <a class="criar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus" style="width: 20px; height: 20px; stroke: white;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Criar evento</a>
+    <a class="eu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-folder" style="width: 20px; height: 20px; stroke: white;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> Seus eventos</a>
+    <a class="ingresso"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag" style="width: 20px; height: 20px; stroke: white;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg> Meus ingressos</a>
+    <button class="conta abrirPopup">Entrar</button>
+ 
+ <div class="barra_de_pesquisa">
+    <input type="text" placeholder="Pesquisar...">
+    <button>Buscar</button>
+ </div>
+</header>
+ 
+ 
+<div class="user">
+ 
+ <div class="user_profile">
+ <div class="user_account" style="color: #ffffff;">
+ <img id="userPhoto" src="" alt="Foto do usuário" style="display: none;">
+ <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user" id="user_icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+ <input type="file" id="photoInput" accept="image/*">
+ </div>
+ 
+ <div class="user_info">
+ <span class="user_name">Usuário 0220</span>
+ <a class="user_edit abrirPopup">Editar perfil</a>
+ <span class="day">Data de entrada: 14/11/2025</span>
+ </div>
+ 
+</div>
+   
+<h1>Ingressos comprados</h1>
+<div id="todos_os_containers">
+<div class="ingressos">
+ 
+    <div class="container1">
+    <h2>Festival de música</h2>
+    <p>Data: 25/06/2025<br>Horário: 20:00<br>Local do evento: Centro Cultural Oscar Niemeyer, em Goiânia</p>
+    <button class="ver_ingresso">Ver ingresso</button>
+    </div>
+   
+    <div class="container2">
+    <h2>Teatro - A bela adormecida</h2>
+    <p>Data: 16/02/2025<br>Horário: 20:00<br>Local do evento: Local não disponível no momento</p>
+    <button class="ver_ingresso">Ver ingresso</button>
+    </div>
+   
+</div>
+ 
+</div>
+
+</div>
+ 
+<div class="restoDosite">
+<h1>Histórico de compras</h1>
+<div class="history">
+   
+    <div class="tabela">
+   <div class="linha categoria">
+    <span>Data</span>
+    <span>Valor</span>
+    <span>Status</span>
+   </div>
+ 
+   <div class="linha">
+    <span>25/06/2025</span>
+    <span>R$ 200,00</span>
+    <span id="comprado">Concluído</span>
+   </div>
+ 
+     <div class="linha">
+    <span>16/02/2026</span>
+    <span>R$ 150,00</span>
+    <span id="comprado">Concluído</span>
+   </div>
+ 
+     <div class="linha">
+    <span>08/09/2024</span>
+    <span>R$ 300,00</span>
+    <span id="cancelado">Cancelado</span>
+   </div>
+   </div>
+</div>
+ 
+<h1>Eventos favoritos</h1>
+<div class="favoritos">
+    <div class="eventos_favoritos">
+       <p class="title">Conferência de tecnologia</p>
+       <p>08/09/2024</p>
+    </div>
+ 
+    <div class="eventos_favoritos">
+       <p class="title">Festival de Jazz</p>
+       <p>14/09/2024</p>
+    </div>
+ 
+    <div class="eventos_favoritos">
+       <p class="title">Exposição de arte</p>
+       <p>21/10/2024</p>
+    </div>
+</div>
+</div>
+
+<button class="ver_mais" id="botaoVermais">Ver mais</button>
+
+<!-- POPUP SIMPLES -->
+<div id="popup" class="popup">
+  <div class="popup-content" style="background: linear-gradient(orange, #00009c);">
+    <h3 style="margin:0 0 12px 0; color: #fff; font-family: Arial;">Editar perfil</h3>
+ 
+    <button class="pop_up_btn" style="width:100%; margin-top:8px; padding:10px; border-radius:6px; border:none; cursor:pointer; background-color: orange; color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3" style="width: 20px; height: 20px; stroke: #fff;"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg> Mudar nome</button>
+    <button class="pop_up_btn" style="width:100%; margin-top:8px; padding:10px; border-radius:6px; border:none; cursor:pointer; background-color: orange; color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera" style="width: 20px; height: 20px; stroke: #fff;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg> Mudar foto</button>
+<a href="login.html" class="pop_up_btn" style="width:100%; margin-top:8px; padding:10px; border-radius:6px; border:none; cursor:pointer; background-color: orange; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out" style="width: 20px; height: 20px; stroke: #fff;">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+    <polyline points="16 17 21 12 16 7"></polyline>
+    <line x1="21" y1="12" x2="9" y2="12"></line>
+  </svg>
+  Sair da conta
+</a>
+    <button class="pop_up_btn" style="width:100%; margin-top:8px; padding:10px; border-radius:6px; border:none; cursor:pointer; background-color: orange; color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus" style="width: 20px; height: 20px; stroke: #fff;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg> Adicionar conta</button>
+ 
+    <span id="fecharPopup" style="position:absolute; top:6px; right:10px; font-size:24px; cursor:pointer; color: #fff;">×</span>
+  </div>
+</div>
+ 
+ 
+<footer class="rodape" style="font-family: Arial, sans-serif;">
+    <div class="coluna">
+        <p><strong>Sobre o SenacConecta</strong></p>
+        <p>Institucional</p>
+        <p>Tendências</p>
+        <p>Sustentabilidade</p>
+        <p>Blog</p>
+    </div>
+ 
+    <div class="coluna">
+        <p><strong>Outros sites</strong></p><strong>
+        <p>Desenvolvedores</p>
+        <p>Senac Pago</p>
+        <p>Envios</p>
+        <p>Senac Shops</p>
+    </strong></div><strong>
+ 
+    <div class="coluna">
+        <p><strong>Contato</strong></p><strong>
+        <p>Comprar</p>
+        <p>Vender</p>
+        <p>Solução de problemas</p>
+        <p>Segurança</p>
+    </strong></div><strong>
+ 
+    <div class="coluna">
+        <p><strong>Redes sociais</strong></p><strong>
+       <img src="imagens/X.avif" alt="X" style="width:20px; height:20px; border-radius: 10px;">
+        <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook" style="width:20px; height: 20px; stroke:white;"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg> Facebook</p>
+        <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram" style="width:20px; height: 20px; stroke:white;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg> Instagram</p>
+        <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-youtube" style="width:20px; height: 20px; stroke:white;"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg> YouTube</p>
+    </strong></div><strong>
+ 
+    <div class="coluna">
+        <p><strong>Minha conta</strong></p><strong>
+        <p>Entre</p>
+        <p>Minha conta</p>
+        <p>Vender</p>
+    </strong></div><strong>
+</strong></strong></strong></strong></footer><strong><strong><strong>
+ 
+ 
+<script>
+       
+feather.replace();
+ 
+// --- VER MAIS ---
+const botao = document.getElementById("botaoVermais");
+const restoDosite = document.querySelector(".restoDosite");
+let fechado = true;
+ 
+botao.addEventListener("click", () => {
+    fechado = !fechado;
+    restoDosite.style.display = fechado ? "none" : "grid";
+    botao.textContent = fechado ? "Ver mais" : "Ver menos";
+});
+ 
+// --- TROCAR FOTO ---
+const input = document.getElementById('photoInput');
+const img = document.getElementById('userPhoto');
+const icon = document.getElementById('user_icon');
+ 
+input.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        img.src = URL.createObjectURL(file);
+        img.style.display = "block";
+        icon.style.display = "none";
+    }
+});
+ 
+// --- POPUP ---
+const gatilhos = document.querySelectorAll('.abrirPopup');
+const popup = document.getElementById('popup');
+const fechar = document.getElementById('fecharPopup');
+ 
+gatilhos.forEach(gatilho => {
+    gatilho.addEventListener('click', (e) => {
+        e.preventDefault();
+        popup.style.display = "flex";
+    });
+});
+ 
+fechar.addEventListener('click', () => {
+    popup.style.display = "none";
+});
+ 
+// fecha ao clicar fora
+popup.addEventListener('click', (e) => {
+    if (e.target === popup) popup.style.display = "none";
+});
+ 
+// fecha com ESC
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') popup.style.display = 'none';
+});
+ 
+</script>
+
+</strong></strong></strong></body>

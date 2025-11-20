@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Organizadores - Gestão de Eventos</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+    }
+
+    header {
+      background-color: #0c3c90;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    header nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .search-bar input {
+      padding: 5px;
+      border-radius: 5px;
+      border: none;
+      width: 250px;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    aside {
+      background-color: #c8d9f0;
+      width: 200px;
+      height: 100vh;
+      padding-top: 20px;
+    }
+
+    aside button {
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+      padding: 10px;
+      border: none;
+      background-color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    aside button:hover {
+      background-color: #0c3c90;
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #0c3c90;
+    }
+
+    .btn-group button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      margin-right: 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-cadastrar { background-color: #0c3c90; }
+    .btn-eventos { background-color: #ff8c00; }
+    .btn-cancelar { background-color: #f3d22b; color: #333; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #c8d9f0;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>GESTÃO DE EVENTOS</h1>
+    <nav>
+      <a href="#" onclick="mostrarSecao('cadastrar')">Criar evento</a>
+      <a href="#" onclick="mostrarSecao('eventos')">Meus eventos</a>
+      <a href="#" onclick="mostrarSecao('ingressos')">Meus ingressos</a>
+    </nav>
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar...">
+    </div>
+  </header>
+
+  <div class="container">
+    <aside>
+      <button onclick="mostrarSecao('eventos')">📅 Eventos</button>
+      <button onclick="mostrarSecao('vendas')">🛒 Vendas</button>
+      <button onclick="mostrarSecao('relatorio')">📈 Relatório</button>
+      <button onclick="mostrarSecao('config')">⚙️ Configuração</button>
+    </aside>
+
+    <main>
+      
+      <section id="eventos">
+        <h2>Eventos</h2>
+        <div class="btn-group">
+          <button class="btn-cadastrar" onclick="mostrarSecao('cadastrar')">Cadastrar</button>
+          <button class="btn-eventos" onclick="mostrarSecao('eventos')">Eventos</button>
+          <button class="btn-cancelar" onclick="mostrarSecao('cancelar')">Cancelar</button>
+        </div>
+        <table>
+          <tr>
+            <th>Nome</th>
+            <th>Data</th>
+            <th>Local</th>
+            <th>Status</th>
+            <th>Vendas e Relatório</th>
+          </tr>
+          <tr>
+            <td><b>Evento 1</b></td>
+            <td>12 de Maio</td>
+            <td>São Paulo</td>
+            <td>Ativo</td>
+            <td><button onclick="mostrarSecao('relatorio')">Ver relatório</button></td>
+          </tr>
+        </table>
+      </section>
+
+      
+      <section id="cadastrar" class="hidden">
+        <h2>Cadastrar novo evento</h2>
+        <form onsubmit="cadastrarEvento(event)">
+          <label>Nome do evento:</label><br>
+          <input type="text" id="nomeEvento" required><br><br>
+          <label>Data:</label><br>
+          <input type="date" id="dataEvento" required><br><br>
+          <label>Local:</label><br>
+          <input type="text" id="localEvento" required><br><br>
+          <button type="submit" class="btn-cadastrar">Salvar</button>
+        </form>
+      </section>
+
+      
+      <section id="vendas" class="hidden"><h2>Painel de Vendas</h2><p>Exibe relatórios de ingressos vendidos.</p></section>
+      <section id="relatorio" class="hidden"><h2>Relatório do Evento</h2><p>Informações detalhadas sobre desempenho do evento.</p></section>
+      <section id="config" class="hidden"><h2>Configuração</h2><p>Gerencie suas preferências de conta e notificações.</p></section>
+      <section id="cancelar" class="hidden"><h2>Cancelar evento</h2><p>Selecione um evento para cancelar.</p></section>
+      <section id="ingressos" class="hidden"><h2>Meus Ingressos</h2><p>Lista de ingressos comprados.</p></section>
+    </main>
+  </div>
+
+  <script>
+    function mostrarSecao(secao) {
+      const secoes = document.querySelectorAll("main section");
+      secoes.forEach(s => s.classList.add("hidden"));
+      document.getElementById(secao).classList.remove("hidden");
+    }
+
+    function cadastrarEvento(event) {
+      event.preventDefault();
+      alert("Evento cadastrado com sucesso!");
+      mostrarSecao('eventos');
+    }
+  </script>
+
+</body>
+</html>
